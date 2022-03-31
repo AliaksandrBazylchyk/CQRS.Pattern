@@ -1,5 +1,4 @@
-﻿using System;
-using MongoDB.Bson;
+﻿using CQRS.Pattern.Infrastructure.Base;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace CQRS.Pattern.Models.Persons
