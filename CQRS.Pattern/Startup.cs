@@ -1,10 +1,13 @@
 using System.Reflection;
+using CQRS.Pattern.Infrastructure.Configurations;
+using CQRS.Pattern.Infrastructure.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 namespace CQRS.Pattern
@@ -22,6 +25,11 @@ namespace CQRS.Pattern
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
+
+            services.Configure<ConnectionOptions>(Configuration.GetSection(ConnectionOptions.SectionName));
+            services.AddSingleton<ConnectionOptions>(x => x.GetRequiredService<IOptions<ConnectionOptions>>().Value);
+
+            services.AddDbCollection(Configuration.GetSection(ConnectionOptions.SectionName).Get<ConnectionOptions>());
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
