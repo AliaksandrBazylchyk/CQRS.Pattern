@@ -1,38 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using CQRS.Pattern.Infrastructure.Configurations;
-using CQRS.Pattern.Models.Persons;
 using MongoDB.Driver;
 
 namespace CQRS.Pattern.Infrastructure.Contexts
 {
     public class MongoDBContext
     {
-        private readonly IMongoCollection<Person> _persons;
+        public readonly IMongoClient Client;
+        public readonly IMongoDatabase MongoDatabase;
 
-        public MongoDBContext(ConnectionOptions options)
+        public MongoDBContext(ConnectionOptions options, Action initConventions = null)
         {
-            var client = new MongoClient(options.MongoDbConnectionClient);
-            var database = client.GetDatabase(options.MongoDbConnectionDatabase);
-            _persons = database.GetCollection<Person>("Persons");
+            Client = new MongoClient(options.MongoDbConnectionClient);
+            MongoDatabase = Client.GetDatabase(options.MongoDbConnectionDatabase);
         }
-
-        public Person Create(Person submission)
-        {
-            _persons.InsertOne(submission);
-            return submission;
-        }
-
-        public IEnumerable<Person> Read() =>
-            _persons.Find(sub => true).ToList();
-
-        public Person Find(Guid id) =>
-            _persons.Find(sub => sub.Id == id).SingleOrDefault();
-
-        public void Update(Person person) =>
-            _persons.ReplaceOne(sub => sub.Id == person.Id, person);
-
-        public void Delete(Guid id) =>
-            _persons.DeleteOne(sub => sub.Id == id);
     }
 }
