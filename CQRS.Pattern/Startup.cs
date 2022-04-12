@@ -1,6 +1,12 @@
 using System.Reflection;
-using CQRS.Pattern.Infrastructure.Configurations;
-using CQRS.Pattern.Infrastructure.Extensions;
+using CQRS.Pattern.BLL.Mapping;
+using CQRS.Pattern.BLL.Services.Person;
+using CQRS.Pattern.Configurations;
+using CQRS.Pattern.DAL.Repositories;
+using CQRS.Pattern.DAL.Repositories.Mongo;
+using CQRS.Pattern.DAL.Repositories.Npg;
+using CQRS.Pattern.Extensions;
+using CQRS.Pattern.Mapping;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,12 +30,25 @@ namespace CQRS.Pattern
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // MediatR
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
+            // Application configurations
             services.Configure<ConnectionOptions>(Configuration.GetSection(ConnectionOptions.SectionName));
-            services.AddSingleton<ConnectionOptions>(x => x.GetRequiredService<IOptions<ConnectionOptions>>().Value);
+            services.AddSingleton(x => x.GetRequiredService<IOptions<ConnectionOptions>>().Value);
 
+            // Postgres and Mongo database initializer
             services.AddDbCollection(Configuration.GetSection(ConnectionOptions.SectionName).Get<ConnectionOptions>());
+
+            // Application repositories
+            services.AddScoped<IMongoPersonRepository, MongoPersonRepository>();
+            services.AddScoped<INpgPersonRepository, NpgPersonRepository>();
+
+            // Application services
+            services.AddScoped(typeof(IPersonService), typeof(PersonService));
+
+            // AutoMapper
+            services.AddAutoMapper(typeof(AppBaseMappingProfile), typeof(BllBaseMappingProfile));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

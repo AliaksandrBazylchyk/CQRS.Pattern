@@ -1,4 +1,4 @@
-﻿namespace CQRS.Pattern.Infrastructure.Configurations
+﻿namespace CQRS.Pattern.Configurations
 {
     public class ConnectionOptions
     {
