@@ -1,7 +1,7 @@
-﻿using CQRS.Pattern.Models.Persons;
+﻿using CQRS.Pattern.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace CQRS.Pattern.Infrastructure.Contexts
+namespace CQRS.Pattern.DAL.Contexts
 {
     public class NpgsqlContext : DbContext
     {

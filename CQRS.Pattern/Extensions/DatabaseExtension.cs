@@ -1,9 +1,9 @@
-﻿using CQRS.Pattern.Infrastructure.Configurations;
-using CQRS.Pattern.Infrastructure.Contexts;
+﻿using CQRS.Pattern.Configurations;
+using CQRS.Pattern.DAL.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CQRS.Pattern.Infrastructure.Extensions
+namespace CQRS.Pattern.Extensions
 {
     public static class DatabaseExtension
     {
@@ -13,7 +13,7 @@ namespace CQRS.Pattern.Infrastructure.Extensions
         )
         {
             services.AddDbContext<NpgsqlContext>(s => { s.UseNpgsql(connection.PostgresConnectionString); });
-            services.AddSingleton<MongoDBContext>();
+
             return services;
         }
     }
