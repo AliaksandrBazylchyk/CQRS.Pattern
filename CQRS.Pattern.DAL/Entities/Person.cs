@@ -1,7 +1,7 @@
-﻿using CQRS.Pattern.Infrastructure.Base;
+﻿using CQRS.Pattern.DAL.Base;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace CQRS.Pattern.Models.Persons
+namespace CQRS.Pattern.DAL.Entities
 {
     public class Person : BaseEntity
     {

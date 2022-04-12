@@ -2,7 +2,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace CQRS.Pattern.Infrastructure.Base
+namespace CQRS.Pattern.DAL.Base
 {
     /// <summary>
     /// Generic entity class
